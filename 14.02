@@ -9,39 +9,20 @@
 body{
 margin:0;
 overflow:hidden;
-background: radial-gradient(circle at top, #200020, #000);
-font-family: Arial, sans-serif;
-color:white;
+background:linear-gradient(to bottom,#1a001f,#000);
+font-family:Arial, sans-serif;
 text-align:center;
+color:white;
 }
 
-/* Звезди */
-.star{
-position:absolute;
-width:2px;
-height:2px;
-background:white;
-opacity:0.8;
-animation: twinkle 2s infinite alternate;
-}
-@keyframes twinkle{
-from{opacity:0.3}
-to{opacity:1}
-}
-
-h1{
-margin-top:60px;
-font-size:26px;
-letter-spacing:2px;
-}
-
+/* Бутон */
 #heartBtn{
-font-size:90px;
-border:none;
+margin-top:100px;
+font-size:80px;
 background:none;
+border:none;
 cursor:pointer;
 animation:pulse 1.2s infinite;
-filter: drop-shadow(0 0 25px red);
 }
 
 @keyframes pulse{
@@ -52,130 +33,85 @@ filter: drop-shadow(0 0 25px red);
 
 .teddy{
 position:absolute;
-font-size:90px;
-top:45%;
-transition:3s;
+top:50%;
+font-size:70px;
 }
 
-.throwHeart{
+.heart{
 position:absolute;
-font-size:26px;
-animation: fly 2s linear forwards;
+font-size:24px;
+animation:fall 3s linear forwards;
 }
 
-@keyframes fly{
-0%{transform:translate(0,0)}
-100%{transform:translate(var(--x), var(--y)); opacity:0}
+@keyframes fall{
+to{transform:translateY(100vh);opacity:0}
 }
 
-#loveText{
+#message{
 position:absolute;
-bottom:18%;
+bottom:20%;
 width:100%;
-font-size:45px;
+font-size:36px;
 font-weight:bold;
-color:#ff4d88;
 opacity:0;
-transition:3s;
-text-shadow:0 0 25px red;
+transition:2s;
+color:#ff4d88;
 }
 </style>
 </head>
 
 <body>
 
-<h1>Деница… натисни сърцето ❤️</h1>
+<h2>Деница… натисни сърцето ❤️</h2>
 <button id="heartBtn">❤️</button>
 
-<div id="loveText">ДЕНИЦА, ОБИЧАМ ТЕ 💖</div>
-
-<audio id="music" loop>
-<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" type="audio/mpeg">
-</audio>
+<div id="message">ДЕНИЦА, ОБИЧАМ ТЕ 💖</div>
 
 <script>
-const btn=document.getElementById("heartBtn");
-const music=document.getElementById("music");
-const loveText=document.getElementById("loveText");
+const btn = document.getElementById("heartBtn");
+const message = document.getElementById("message");
 
-/* Звезден фон */
-for(let i=0;i<150;i++){
-let star=document.createElement("div");
-star.className="star";
-star.style.top=Math.random()*100+"vh";
-star.style.left=Math.random()*100+"vw";
-star.style.animationDuration=(1+Math.random()*2)+"s";
-document.body.appendChild(star);
-}
+btn.addEventListener("click", function(){
 
-btn.addEventListener("click",()=>{
 btn.style.display="none";
-music.play();
 
 /* Мечета */
 const teddy1=document.createElement("div");
 teddy1.innerHTML="🧸";
 teddy1.className="teddy";
-teddy1.style.left="10%";
+teddy1.style.left="20%";
 
 const teddy2=document.createElement("div");
 teddy2.innerHTML="🧸";
 teddy2.className="teddy";
-teddy2.style.right="10%";
+teddy2.style.right="20%";
 
 document.body.appendChild(teddy1);
 document.body.appendChild(teddy2);
 
+/* Хвърляне на сърца */
 let count=0;
-let interval=setInterval(()=>{
-throwHeart("20%","50%","40vw","25vh");
-throwHeart("80%","50%","-40vw","25vh");
-count++;
+let interval=setInterval(function(){
+let heart=document.createElement("div");
+heart.innerHTML="❤️";
+heart.className="heart";
+heart.style.left=Math.random()*100+"vw";
+heart.style.top="40vh";
+document.body.appendChild(heart);
 
+setTimeout(()=>heart.remove(),3000);
+
+count++;
 if(count>25){
 clearInterval(interval);
 setTimeout(()=>{
-loveText.style.opacity="1";
-teddy1.style.left="35%";
-teddy2.style.right="35%";
-createHeartRain();
+message.style.opacity="1";
 },2000);
 }
-},250);
+},200);
+
 });
-
-function throwHeart(left,top,x,y){
-let heart=document.createElement("div");
-heart.innerHTML="❤️";
-heart.className="throwHeart";
-heart.style.left=left;
-heart.style.top=top;
-heart.style.setProperty('--x',x);
-heart.style.setProperty('--y',y);
-document.body.appendChild(heart);
-setTimeout(()=>heart.remove(),2000);
-}
-
-function createHeartRain(){
-for(let i=0;i<60;i++){
-let heart=document.createElement("div");
-heart.innerHTML="💖";
-heart.style.position="absolute";
-heart.style.left=Math.random()*100+"vw";
-heart.style.top="-20px";
-heart.style.fontSize="20px";
-heart.style.animation="fall 4s linear forwards";
-document.body.appendChild(heart);
-}
-}
-
 </script>
-
-<style>
-@keyframes fall{
-to{transform:translateY(100vh); opacity:0}
-}
-</style>
 
 </body>
 </html>
