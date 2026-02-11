@@ -3,62 +3,84 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>❤️ За Теб ❤️</title>
+<title>За Теб ❤️</title>
 
 <style>
-body {
-    margin: 0;
-    overflow: hidden;
-    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-    font-family: 'Arial', sans-serif;
-    text-align: center;
+body{
+margin:0;
+overflow:hidden;
+background: radial-gradient(circle at top, #1a001f, #000);
+font-family: 'Arial', sans-serif;
+color:white;
+text-align:center;
 }
 
-h1 {
-    margin-top: 50px;
-    color: white;
-    font-size: 28px;
+/* Звезден фон */
+.star{
+position:absolute;
+width:2px;
+height:2px;
+background:white;
+opacity:0.7;
+animation: twinkle 2s infinite alternate;
+}
+@keyframes twinkle{
+from{opacity:0.2}
+to{opacity:1}
 }
 
-#heartBtn {
-    font-size: 60px;
-    border: none;
-    background: none;
-    cursor: pointer;
-    animation: pulse 1.5s infinite;
+/* Заглавие */
+h1{
+margin-top:60px;
+font-size:28px;
+letter-spacing:2px;
 }
 
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.2); }
-    100% { transform: scale(1); }
+/* Бутон сърце */
+#heartBtn{
+font-size:80px;
+border:none;
+background:none;
+cursor:pointer;
+animation: pulse 1.2s infinite;
+filter: drop-shadow(0 0 20px red);
+}
+@keyframes pulse{
+0%{transform:scale(1)}
+50%{transform:scale(1.2)}
+100%{transform:scale(1)}
 }
 
-.teddy {
-    position: absolute;
-    font-size: 60px;
+/* Мечета */
+.teddy{
+position:absolute;
+font-size:80px;
+top:40%;
 }
 
-.heart {
-    position: absolute;
-    font-size: 24px;
-    animation: fall 3s linear forwards;
+/* Летящи сърца */
+.throwHeart{
+position:absolute;
+font-size:26px;
+animation: fly 2s linear forwards;
 }
 
-@keyframes fall {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(80vh); opacity: 0; }
+@keyframes fly{
+0%{transform:translate(0,0)}
+100%{transform:translate(var(--x), var(--y)); opacity:0}
 }
 
-#message {
-    position: absolute;
-    bottom: 20%;
-    width: 100%;
-    font-size: 40px;
-    font-weight: bold;
-    color: red;
-    opacity: 0;
-    transition: opacity 2s;
+/* Финален текст */
+#loveText{
+position:absolute;
+bottom:15%;
+width:100%;
+font-size:50px;
+font-weight:bold;
+color:#ff4d6d;
+opacity:0;
+transition:2s;
+text-shadow:0 0 20px red;
 }
 </style>
 </head>
@@ -68,63 +90,99 @@ h1 {
 <h1>Натисни сърцето ❤️</h1>
 <button id="heartBtn">❤️</button>
 
-<div id="message">Обичам те</div>
+<div id="loveText">ОБИЧАМ ТЕ</div>
 
 <audio id="music" loop>
-  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
 </audio>
 
 <script>
 const btn = document.getElementById("heartBtn");
 const music = document.getElementById("music");
-const message = document.getElementById("message");
+const loveText = document.getElementById("loveText");
 
-btn.addEventListener("click", () => {
-    btn.style.display = "none";
-    music.play();
+/* Създаваме звезди */
+for(let i=0;i<120;i++){
+let star=document.createElement("div");
+star.className="star";
+star.style.top=Math.random()*100+"vh";
+star.style.left=Math.random()*100+"vw";
+star.style.animationDuration=(1+Math.random()*2)+"s";
+document.body.appendChild(star);
+}
 
-    // Създаваме мечета
-    const teddy1 = document.createElement("div");
-    teddy1.innerHTML = "🧸";
-    teddy1.classList.add("teddy");
-    teddy1.style.left = "20%";
-    teddy1.style.top = "40%";
-    document.body.appendChild(teddy1);
+btn.addEventListener("click", ()=>{
+btn.style.display="none";
+music.play();
 
-    const teddy2 = document.createElement("div");
-    teddy2.innerHTML = "🧸";
-    teddy2.classList.add("teddy");
-    teddy2.style.right = "20%";
-    teddy2.style.top = "40%";
-    document.body.appendChild(teddy2);
+/* Мечета */
+const teddy1=document.createElement("div");
+teddy1.innerHTML="🧸";
+teddy1.className="teddy";
+teddy1.style.left="15%";
 
-    // Замерване със сърца
-    let count = 0;
-    const interval = setInterval(() => {
-        createHeart();
-        count++;
-        if (count > 25) {
-            clearInterval(interval);
-            setTimeout(() => {
-                message.style.opacity = "1";
-            }, 2000);
-        }
-    }, 200);
+const teddy2=document.createElement("div");
+teddy2.innerHTML="🧸";
+teddy2.className="teddy";
+teddy2.style.right="15%";
+
+document.body.appendChild(teddy1);
+document.body.appendChild(teddy2);
+
+let count=0;
+let interval=setInterval(()=>{
+throwHeart("25%","50%","50vw","30vh");
+throwHeart("75%","50%","-50vw","30vh");
+count++;
+
+if(count>20){
+clearInterval(interval);
+setTimeout(()=>{
+formLove();
+},2000);
+}
+},300);
 });
 
-function createHeart() {
-    const heart = document.createElement("div");
-    heart.innerHTML = "❤️";
-    heart.classList.add("heart");
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.top = "30vh";
-    document.body.appendChild(heart);
+function throwHeart(left,top,x,y){
+let heart=document.createElement("div");
+heart.innerHTML="❤️";
+heart.className="throwHeart";
+heart.style.left=left;
+heart.style.top=top;
+heart.style.setProperty('--x',x);
+heart.style.setProperty('--y',y);
+document.body.appendChild(heart);
 
-    setTimeout(() => {
-        heart.remove();
-    }, 3000);
+setTimeout(()=>heart.remove(),2000);
 }
+
+function formLove(){
+loveText.style.opacity="1";
+
+/* Малки падащи сърца около текста */
+for(let i=0;i<50;i++){
+let heart=document.createElement("div");
+heart.innerHTML="💖";
+heart.style.position="absolute";
+heart.style.left=Math.random()*100+"vw";
+heart.style.top="-20px";
+heart.style.fontSize="20px";
+heart.style.animation="fall 4s linear forwards";
+document.body.appendChild(heart);
+}
+}
+
 </script>
+
+<style>
+@keyframes fall{
+to{transform:translateY(100vh); opacity:0}
+}
+</style>
+
+</body>
+</html>
 
 </body>
 </html>
