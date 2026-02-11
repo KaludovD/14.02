@@ -3,62 +3,60 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>За Теб ❤️</title>
+<title>За Деница ❤️</title>
 
 <style>
 body{
 margin:0;
 overflow:hidden;
-background: radial-gradient(circle at top, #1a001f, #000);
-font-family: 'Arial', sans-serif;
+background: radial-gradient(circle at top, #200020, #000);
+font-family: Arial, sans-serif;
 color:white;
 text-align:center;
 }
 
-/* Звезден фон */
+/* Звезди */
 .star{
 position:absolute;
 width:2px;
 height:2px;
 background:white;
-opacity:0.7;
+opacity:0.8;
 animation: twinkle 2s infinite alternate;
 }
 @keyframes twinkle{
-from{opacity:0.2}
+from{opacity:0.3}
 to{opacity:1}
 }
 
-/* Заглавие */
 h1{
 margin-top:60px;
-font-size:28px;
+font-size:26px;
 letter-spacing:2px;
 }
 
-/* Бутон сърце */
 #heartBtn{
-font-size:80px;
+font-size:90px;
 border:none;
 background:none;
 cursor:pointer;
-animation: pulse 1.2s infinite;
-filter: drop-shadow(0 0 20px red);
+animation:pulse 1.2s infinite;
+filter: drop-shadow(0 0 25px red);
 }
+
 @keyframes pulse{
 0%{transform:scale(1)}
 50%{transform:scale(1.2)}
 100%{transform:scale(1)}
 }
 
-/* Мечета */
 .teddy{
 position:absolute;
-font-size:80px;
-top:40%;
+font-size:90px;
+top:45%;
+transition:3s;
 }
 
-/* Летящи сърца */
 .throwHeart{
 position:absolute;
 font-size:26px;
@@ -70,39 +68,38 @@ animation: fly 2s linear forwards;
 100%{transform:translate(var(--x), var(--y)); opacity:0}
 }
 
-/* Финален текст */
 #loveText{
 position:absolute;
-bottom:15%;
+bottom:18%;
 width:100%;
-font-size:50px;
+font-size:45px;
 font-weight:bold;
-color:#ff4d6d;
+color:#ff4d88;
 opacity:0;
-transition:2s;
-text-shadow:0 0 20px red;
+transition:3s;
+text-shadow:0 0 25px red;
 }
 </style>
 </head>
 
 <body>
 
-<h1>Натисни сърцето ❤️</h1>
+<h1>Деница… натисни сърцето ❤️</h1>
 <button id="heartBtn">❤️</button>
 
-<div id="loveText">ОБИЧАМ ТЕ</div>
+<div id="loveText">ДЕНИЦА, ОБИЧАМ ТЕ 💖</div>
 
 <audio id="music" loop>
-<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
+<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-const btn = document.getElementById("heartBtn");
-const music = document.getElementById("music");
-const loveText = document.getElementById("loveText");
+const btn=document.getElementById("heartBtn");
+const music=document.getElementById("music");
+const loveText=document.getElementById("loveText");
 
-/* Създаваме звезди */
-for(let i=0;i<120;i++){
+/* Звезден фон */
+for(let i=0;i<150;i++){
 let star=document.createElement("div");
 star.className="star";
 star.style.top=Math.random()*100+"vh";
@@ -111,7 +108,7 @@ star.style.animationDuration=(1+Math.random()*2)+"s";
 document.body.appendChild(star);
 }
 
-btn.addEventListener("click", ()=>{
+btn.addEventListener("click",()=>{
 btn.style.display="none";
 music.play();
 
@@ -119,29 +116,32 @@ music.play();
 const teddy1=document.createElement("div");
 teddy1.innerHTML="🧸";
 teddy1.className="teddy";
-teddy1.style.left="15%";
+teddy1.style.left="10%";
 
 const teddy2=document.createElement("div");
 teddy2.innerHTML="🧸";
 teddy2.className="teddy";
-teddy2.style.right="15%";
+teddy2.style.right="10%";
 
 document.body.appendChild(teddy1);
 document.body.appendChild(teddy2);
 
 let count=0;
 let interval=setInterval(()=>{
-throwHeart("25%","50%","50vw","30vh");
-throwHeart("75%","50%","-50vw","30vh");
+throwHeart("20%","50%","40vw","25vh");
+throwHeart("80%","50%","-40vw","25vh");
 count++;
 
-if(count>20){
+if(count>25){
 clearInterval(interval);
 setTimeout(()=>{
-formLove();
+loveText.style.opacity="1";
+teddy1.style.left="35%";
+teddy2.style.right="35%";
+createHeartRain();
 },2000);
 }
-},300);
+},250);
 });
 
 function throwHeart(left,top,x,y){
@@ -153,15 +153,11 @@ heart.style.top=top;
 heart.style.setProperty('--x',x);
 heart.style.setProperty('--y',y);
 document.body.appendChild(heart);
-
 setTimeout(()=>heart.remove(),2000);
 }
 
-function formLove(){
-loveText.style.opacity="1";
-
-/* Малки падащи сърца около текста */
-for(let i=0;i<50;i++){
+function createHeartRain(){
+for(let i=0;i<60;i++){
 let heart=document.createElement("div");
 heart.innerHTML="💖";
 heart.style.position="absolute";
@@ -180,9 +176,6 @@ document.body.appendChild(heart);
 to{transform:translateY(100vh); opacity:0}
 }
 </style>
-
-</body>
-</html>
 
 </body>
 </html>
